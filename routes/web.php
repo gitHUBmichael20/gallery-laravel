@@ -17,4 +17,3 @@ Route::get('/index', function () {
 
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery');
 Route::get('/upload', [GalleryController::class, 'showtable'])->name('upload');
-Route::post('/store', [galleryController::class, 'store'])->name('gallery-store');

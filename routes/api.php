@@ -9,6 +9,8 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::post('/gallery-store', [galleryController::class, 'store'])->name('gallery-store');
-Route::delete('/gallery-destroy/{id}', [GalleryController::class, 'destroy'])->name('gallery-destroy');
-Route::patch('/gallery-update/{id}', [GalleryController::class, 'update'])->name('gallery-update');
+route::prefix('/gallery')->group(function () {
+    Route::post('/store', [galleryController::class, 'store'])->name('gallery-store');
+    Route::delete('/destroy', [GalleryController::class, 'destroy'])->name('gallery-destroy');
+    Route::patch('/update/{id}', [GalleryController::class, 'update'])->name('gallery-update');
+});

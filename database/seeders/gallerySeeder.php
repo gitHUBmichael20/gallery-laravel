@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\Gallery;
+use Faker\Factory as Faker;
 
 class GallerySeeder extends Seeder
 {
@@ -14,15 +15,19 @@ class GallerySeeder extends Seeder
      */
     public function run(): void
     {
-        $imageCount = 15;
+        $faker = Faker::create();
+
+        $imageCount = 25;
         for ($i = 1; $i <= $imageCount; $i++) {
             $url = 'https://picsum.photos/1920/1080';
             $imageContent = file_get_contents($url);
             $fileName = Str::uuid() . '.jpg';
             Storage::disk('public')->put("images/{$fileName}", $imageContent);
+
             Gallery::create([
-                'name' => "Image {$i}",
+                'name' => $faker->words(2, true),
                 'image' => "images/{$fileName}",
+                'description' => $faker->sentence(),
             ]);
         }
     }

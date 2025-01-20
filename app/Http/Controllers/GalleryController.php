@@ -14,7 +14,7 @@ class galleryController extends Controller
     public function index()
     {
 
-        $galleries = gallery::all();
+        $galleries = gallery::simplePaginate(16);
         return view('gallery', compact('galleries'));
     }
 
@@ -33,12 +33,14 @@ class galleryController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'description' => 'required|string|max:255',
         ]);
 
         $imagePath = $request->file('image')->store('images', 'public');
         gallery::create([
             'name' => $request->input('name'),
             'image' => $imagePath,
+            'description' => $request->input('description'),
         ]);
 
         return response("
@@ -60,22 +62,18 @@ class galleryController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'description' => 'required|string|max:255',
         ]);
 
         $gallery->name = $validatedData['name'];
 
         if ($request->hasFile('image')) {
-            // Delete old image
             Storage::delete('public/images/' . $gallery->image);
-
-            // Store new image
             $imageName = time() . '.' . $request->image->extension();
             $request->image->storeAs('public/images', $imageName);
             $gallery->image = $imageName;
         }
-
         $gallery->save();
-
         return redirect()->route('upload')->with('success', 'Gallery updated successfully');
     }
 
@@ -83,25 +81,17 @@ class galleryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        try {
-            $gallery = Gallery::findOrFail($id);
+        $id = $request->input('id');
+        $gallery = Gallery::find($id);
+    
+        if ($gallery) {
             $gallery->delete();
-
-            return response("
-            <script>
-                alert('Image deleted successfully!');
-                location.reload();
-            </script>
-        ");
-        } catch (\Exception $e) {
-            return response("
-            <script>
-                alert('Image not found or unable to delete: {$e->getMessage()}');
-                location.reload();
-            </script>
-        ");
+            return redirect()->route('upload')->with('success', 'Image deleted successfully!');
+        } else {
+            return redirect()->route('upload')->with('error', 'Image not found!');
         }
     }
+    
 }
