@@ -10,4 +10,5 @@ Route::get('/', function () {
 Route::prefix('gallery')->group(function () {
     Route::get('/show', [GalleryController::class, 'index'])->name('gallery');
     Route::get('/upload', [GalleryController::class, 'showtable'])->name('upload');
+    Route::get('/{id}', [GalleryController::class, 'show'])->name('articles.show');
 });

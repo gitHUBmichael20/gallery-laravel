@@ -14,7 +14,7 @@ class galleryController extends Controller
     public function index()
     {
 
-        $galleries = gallery::simplePaginate(16);
+        $galleries = gallery::Paginate(16);
         return view('gallery', compact('galleries'));
     }
 
@@ -43,12 +43,7 @@ class galleryController extends Controller
             'description' => $request->input('description'),
         ]);
 
-        return response("
-        <script>
-            alert('Image stored successfully!');
-            location.reload;
-        </script>
-    ");
+        return redirect()->route('upload')->with('success', 'Image posted successfully');
     }
 
 
@@ -92,6 +87,12 @@ class galleryController extends Controller
         } else {
             return redirect()->route('upload')->with('error', 'Image not found!');
         }
+    }
+
+    public function show($id)
+    {
+        $gallery = gallery::findOrFail($id);
+        return view('read', ['gallery' => $gallery]);
     }
     
 }
