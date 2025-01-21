@@ -13,7 +13,6 @@ class galleryController extends Controller
      */
     public function index()
     {
-
         $galleries = gallery::Paginate(16);
         return view('gallery', compact('galleries'));
     }
@@ -80,7 +79,7 @@ class galleryController extends Controller
     {
         $id = $request->input('id');
         $gallery = Gallery::find($id);
-    
+
         if ($gallery) {
             $gallery->delete();
             return redirect()->route('upload')->with('success', 'Image deleted successfully!');
@@ -89,10 +88,20 @@ class galleryController extends Controller
         }
     }
 
+    /** 
+     * Showing the image. title, and description to read view so user can read it. 
+     */
     public function show($id)
     {
-        $gallery = gallery::findOrFail($id);
-        return view('read', ['gallery' => $gallery]);
+        $gallery = Gallery::findOrFail($id);
+        $related = Gallery::where('id', '!=', $id)
+            ->inRandomOrder()  
+            ->take(3)         
+            ->get();
+
+        return view('read', [
+            'gallery' => $gallery,
+            'related' => $related
+        ]);
     }
-    
 }
