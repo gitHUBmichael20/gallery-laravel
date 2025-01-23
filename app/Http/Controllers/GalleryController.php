@@ -60,12 +60,14 @@ class galleryController extends Controller
         ]);
 
         $gallery->name = $validatedData['name'];
+        $gallery->description = $validatedData['description'];
 
         if ($request->hasFile('image')) {
             Storage::delete('public/images/' . $gallery->image);
             $imageName = time() . '.' . $request->image->extension();
             $request->image->storeAs('public/images', $imageName);
             $gallery->image = $imageName;
+            
         }
         $gallery->save();
         return redirect()->route('upload')->with('success', 'Gallery updated successfully');
@@ -96,7 +98,7 @@ class galleryController extends Controller
         $gallery = Gallery::findOrFail($id);
         $related = Gallery::where('id', '!=', $id)
             ->inRandomOrder()  
-            ->take(3)         
+            ->take(9)         
             ->get();
 
         return view('read', [

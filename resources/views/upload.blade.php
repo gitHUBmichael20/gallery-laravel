@@ -127,9 +127,9 @@
                         readonly>
                 </div>
                 <div class="mb-4">
-                    <label for="edit-description"
+                    <label for="description"
                         class="block text-sm font-medium text-gray-700 dark:text-gray-200">Description</label>
-                    <textarea name="description" id="edit-description"
+                    <textarea name="description" id="description"
                         class="w-full mt-2 p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                         required></textarea>
                 </div>
@@ -161,7 +161,7 @@
 
             document.getElementById('edit-name').value = name;
             document.getElementById('edit-image').value = image;
-            document.getElementById('edit-description').value = description;
+            document.getElementById('description').value = description;
             document.getElementById('editModal').classList.remove('hidden');
         }
 
