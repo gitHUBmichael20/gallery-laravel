@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="shortcut icon" href="{{ asset('assets/logo-gallery.png') }}" type="image/x-icon">
-    <title>Read More</title>
+    <title>{{ $gallery->name }}</title>
     @vite('resources/css/app.css')
 </head>
 
@@ -42,7 +42,7 @@
             <div class="grid grid-cols-3 gap-3">
                 @foreach ($related as $rel)
                     <div
-                        class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
+                        class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-gray-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
                         <img class="w-full h-auto rounded-t-xl" src="{{ asset('storage/' . $rel->image) }}"
                             alt="{{ $rel->name }}">
                         <div class="p-4 md:p-5">
