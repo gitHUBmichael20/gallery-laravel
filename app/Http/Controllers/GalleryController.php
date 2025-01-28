@@ -11,9 +11,15 @@ class galleryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $galleries = gallery::Paginate(16);
+        $query = gallery::query();
+
+        if ($request->has('search') && $request->search != '') {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        $galleries = $query->paginate(16);
         return view('gallery', compact('galleries'));
     }
 
@@ -67,7 +73,6 @@ class galleryController extends Controller
             $imageName = time() . '.' . $request->image->extension();
             $request->image->storeAs('public/images', $imageName);
             $gallery->image = $imageName;
-            
         }
         $gallery->save();
         return redirect()->route('upload')->with('success', 'Gallery updated successfully');
@@ -97,8 +102,8 @@ class galleryController extends Controller
     {
         $gallery = Gallery::findOrFail($id);
         $related = Gallery::where('id', '!=', $id)
-            ->inRandomOrder()  
-            ->take(9)         
+            ->inRandomOrder()
+            ->take(9)
             ->get();
 
         return view('read', [
