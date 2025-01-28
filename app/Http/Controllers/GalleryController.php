@@ -26,7 +26,7 @@ class galleryController extends Controller
     public function showtable()
     {
 
-        $galleries = gallery::all();
+        $galleries = gallery::paginate(15);
         return view('upload', compact('galleries'));
     }
 

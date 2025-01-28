@@ -76,7 +76,7 @@
                         </a>
                     </div>
                 </div>
-                @empty
+            @empty
                 <div class="text-center text-gray-800 dark:text-gray-200">No galleries found.</div>
             @endforelse
         </div>

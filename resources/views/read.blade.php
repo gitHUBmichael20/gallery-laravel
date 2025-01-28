@@ -15,13 +15,15 @@
     <div class="flex items-center justify-center bg-gray-100 dark:bg-gray-900 min-h-screen">
         <div class="max-w-4xl w-full sm:px-6 lg:px-4">
             <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg overflow-hidden">
-                <!-- Full Width Image -->
-                <div class="w-full h-[400px]">
+                <div class="w-full h-[400px] relative group cursor-pointer"
+                    onclick="openImage('{{ asset('storage/' . $gallery->image) }}')">
                     <img src="{{ asset('storage/' . $gallery->image) }}" alt="{{ $gallery->name }}"
                         class="w-full h-full object-cover">
+                    <div
+                        class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <p class="text-white text-lg font-semibold">Click to view larger image</p>
+                    </div>
                 </div>
-
-                <!-- Content Section -->
                 <div class="p-6">
                     <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ $gallery->name }}</h1>
                     <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">
@@ -64,6 +66,11 @@
             <p>No related content found.</p>
         @endif
     </div>
+    <script>
+        function openImage(imageUrl) {
+            window.open(imageUrl, '_blank');
+        }
+    </script>
 </body>
 
 </html>

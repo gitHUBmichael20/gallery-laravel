@@ -36,14 +36,35 @@
             <div class="mb-5">
                 <label for="image" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-200">Your
                     image</label>
-                <input type="file" id="image" name="image"
-                    class="bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
-                    accept="image/*" required onchange="previewImage(event)" />
-            </div>
-            <div id="preview-container" class="mb-5 hidden">
-                <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Image Preview:</p>
-                <img id="image-preview"
-                    class="max-w-full h-auto rounded-lg border border-gray-300 dark:border-gray-600 shadow-md" />
+
+                <!-- Custom file upload area -->
+                <div class="flex items-center justify-center w-full">
+                    <label for="image"
+                        class="flex flex-col items-center justify-center w-full h-48 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200">
+                        <!-- Upload icon -->
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L7 9m3-3 3 3" />
+                            </svg>
+                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                                <span class="font-semibold">Click to upload</span> or drag and drop
+                            </p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, or GIF (MAX. 800x400px)</p>
+                        </div>
+                        <!-- Hidden file input -->
+                        <input id="image" type="file" name="image" class="hidden" accept="image/*" required
+                            onchange="previewImage(event)" />
+                    </label>
+                </div>
+
+                <!-- Image preview container -->
+                <div id="image-preview" class="mt-4 hidden">
+                    <img id="preview" class="max-w-full h-48 rounded-lg object-cover" src="#"
+                        alt="Image preview" />
+                </div>
             </div>
             <button type="submit"
                 class="text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-3 text-center">
@@ -56,6 +77,9 @@
     <section class="max-w-5xl mt-6 mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col gap-3 mb-6">
         <h2 class="text-center text-2xl mt-6 font-bold text-gray-900 dark:text-white">Manage Image</h2>
         <div class="overflow-x-auto">
+            <div class="my-3">
+                {{ $galleries->links() }}
+            </div>
             <table class="w-full text-sm text-left text-gray-700 dark:text-gray-300 border-collapse">
                 <thead class="bg-blue-600 dark:bg-blue-700 text-white">
                     <tr>
@@ -100,6 +124,9 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="my-3">
+                {{ $galleries->links() }}
+            </div>
         </div>
     </section>
 
@@ -171,9 +198,9 @@
         }
 
         function previewImage(event) {
+            const previewContainer = document.getElementById('image-preview');
+            const previewImage = document.getElementById('preview');
             const file = event.target.files[0];
-            const previewContainer = document.getElementById('preview-container');
-            const previewImage = document.getElementById('image-preview');
 
             if (file) {
                 const reader = new FileReader();
@@ -183,6 +210,7 @@
                 };
                 reader.readAsDataURL(file);
             } else {
+                previewImage.src = '';
                 previewContainer.classList.add('hidden');
             }
         }
