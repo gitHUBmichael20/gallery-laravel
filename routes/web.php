@@ -3,9 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GalleryController;
 
-Route::get('/', function () {
-    return view('index');
-})->name('index');
+Route::get('/', [GalleryController::class, 'index'])
+    ->name('gallery');
 
 Route::prefix('gallery')->group(function () {
     Route::get('/show', [GalleryController::class, 'index'])->name('gallery');
